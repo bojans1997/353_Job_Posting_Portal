@@ -1,21 +1,51 @@
+<?php
+
+require("connect.php");
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
-<title>User Sign Up</title>
+<title>Update Profile</title>
 
 <style>
 .center {
-	text-align: center;
+	margin: 0 auto;
+	margin-left: 42%;
+}
+
+.inline-block {
+	display: inline-block;
+}
+
+#left-form {
+	float: left;
+}
+
+#right-form {
+	float: left;
+	clear: right;
+}
+
+.dashboard-link {
+	margin-left: 20%;
 }
 </style>
 </head>
 <body>
 
-<div class="center">
-	<h1>User sign up</h1>
+<div class="dashboard-link">
+	<a href="dashboard.php">Return to Dashboard</a>
 </div>
+
 <div class="center">
-	<form method="POST">
+	<h1>Update Profile</h1>
+</div>
+
+<div class="center">
+	<div id="left-form">
+		<form method="POST">
 			<input type="text" name="fname" id="fname" placeholder="First Name">
 			<br>
 			<input type="text" name="lname" id="lname" placeholder="Last Name">
@@ -46,6 +76,29 @@
 			<br><br>
 			<input type="submit" value="Update">
 		</form>
+	</div>
+	<div id="right-form">
+		<p>
+			Change Category
+		</p>
+		<?php
+
+			// Change which categories appear based on the type of user logged in (employer or employee)
+
+		?>
+		<form method="POST">
+			<input type="radio" name="category" id="basic" value="basic">
+			<label for="basic">Basic (Free)</label>
+			<br>
+			<input type="radio" name="category" value="prime">
+			<label for="prime">Prime ($10/Month)</label>
+			<br>
+			<input type="radio" name="category" value="gold">
+			<label for="gold">Gold ($20/Month)</label>
+			<br>
+			<input type="submit" value="Update">
+		</form>
+	</div>
 </div>
 
 </body>
