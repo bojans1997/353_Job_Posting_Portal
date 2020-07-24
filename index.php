@@ -1,3 +1,11 @@
+<?php
+
+session_start();
+
+header("Location:/353_Main_Project/login.php");
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>

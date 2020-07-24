@@ -1,7 +1,13 @@
+<?php
+
+session_start();
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
-<title>Admin Login</title>
+<title>Login</title>
 
 <style>
 .center {
@@ -12,10 +18,15 @@
 <body>
 
 <div class="center">
-	<h1>Admin Login</h1>
+	<h1>Login</h1>
 </div>
 <div class="center">
-	<form method="POST">
+	<?php
+		if(ISSET($_SESSION['loginError'])) {
+			echo '<p style="color: red">'.$_SESSION["loginError"].'</p>';
+		}
+	?>
+	<form method="POST" action="/353_Main_Project/php_scripts/login.php">
 		<input type="email" name="email" id="email" placeholder="Email address">
 		<br>
 		<input type="password" name="password" id="password" placeholder="Password">
@@ -26,7 +37,8 @@
 <br>
 
 <div class="center">
-	<a href="forgot_password.php">Forgot password? Click here</a>
+	<p><a href="forgot_password.php">Forgot password? Click here</a></p>
+	<p>Don't have an account? <a href="register.php">Click here</a> to register</p>
 </div>
 
 </body>

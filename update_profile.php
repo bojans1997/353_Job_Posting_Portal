@@ -1,6 +1,6 @@
 <?php
 
-require("connect.php");
+require("php_scripts/connect.php");
 
 ?>
 
