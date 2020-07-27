@@ -40,6 +40,12 @@ if(isset($_SESSION['email'])) {
 	clear: right;
 }
 
+#deleteButton {
+	clear: both;
+	margin: 0 auto;
+	padding-top: 2%;
+}
+
 .dashboard-link {
 	margin-left: 20%;
 }
@@ -105,6 +111,10 @@ if(isset($_SESSION['email'])) {
 							<input type="radio" name="category" value="gold" '.(($result["category"]=="gold")?"checked":"").'>
 							<label for="gold">Gold ($20/Month)</label>
 						</form>
+					</div>
+					<br>
+					<div id="deleteButton">
+						<button onclick="confirmDelete()">Delete Account</button>
 					</div>';
 			} else {
 				echo '<p>You must <a href="login.php">log in</a> to view this page</p>';
@@ -112,6 +122,16 @@ if(isset($_SESSION['email'])) {
 
 		?>
 </div>
+
+
+<script>
+	function confirmDelete() {
+		var confirm = window.confirm("Are you sure you want to delete your account?")
+		if(confirm) {
+			window.location.href = "/353_Main_Project/php_scripts/delete_account.php";
+		}
+	}
+</script>
 
 </body>
 </html>
