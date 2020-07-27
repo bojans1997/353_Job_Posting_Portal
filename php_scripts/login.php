@@ -19,7 +19,7 @@ if(count($result) > 0) {
 	if(password_verify($password,$hashPassword)) {
 		$_SESSION["userType"] = $result['role'];
 		$_SESSION["email"] = $email;
-		if(isset($_SESSION["error"])) {
+		if(isset($_SESSION["loginError"])) {
 			unset($_SESSION["loginError"]);
 		}
 		header("Location:/353_Main_Project/dashboard.php");
