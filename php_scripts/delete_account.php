@@ -9,4 +9,6 @@ $email = $_SESSION["email"];
 $deleteUser = $conn->prepare("DELETE FROM user WHERE email = ?");
 $deleteUser->execute([$email]);
 
+session_unset();
+
 header("Location:/353_Main_Project/register.php");
