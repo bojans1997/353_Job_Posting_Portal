@@ -9,8 +9,8 @@ $result = "";
 // if user is logged in, get their data
 if(isset($_SESSION['email'])) {
 	$email = $_SESSION['email'];
-	$getUserData = $conn->prepare("SELECT * FROM user WHERE email = ?");
-	$getUserData->execute([$email]);
+	$getUserData = $conn->prepare("SELECT * FROM user_profile WHERE user_id = ?");
+	$getUserData->execute([$_SESSION['user_id']]);
 	$result = $getUserData->fetch();
 }
 
@@ -63,19 +63,14 @@ if(isset($_SESSION['email'])) {
 
 <div class="center">
 		<?php
-
 			// Show forms if user is logged in
 			if(isset($_SESSION['userType'])) {
 				echo '
 					<div id="left-form">
 						<form method="POST" action="/353_Main_Project/php_scripts/update_user.php">
-							<input type="text" name="fname" id="fname" placeholder="First Name" value="'.$result["fname"].'" required>
-							<br>
-							<input type="text" name="lname" id="lname" placeholder="Last Name" value="'.$result["lname"].'" required>
-							<br>
 							<input type="text" name="address" id="address" placeholder="Address" value="'.$result["address"].'" required>
 							<br>
-							<input type="text" name="postal" id="postal" placeholder="Postal Code" value="'.$result["postalcode"].'" required>
+							<input type="text" name="postal" id="postal" placeholder="Postal Code" value="'.$result["postal_code"].'" required>
 							<br>
 							<select name="province" required>
 								<option value="AB" '.(($result["province"]=="AB")?"selected":"").'>Alberta</option>
@@ -93,23 +88,11 @@ if(isset($_SESSION['email'])) {
 								<option value="YT" '.(($result["province"]=="YT")?"selected":"").'>Yukon</option>
 							</select>
 							<br>
-							<input type="password" name="password" id="password" placeholder="Password" required>
+							<textarea name="description" rows="4" cols="50" placeholder="Describe yourself" maxlength="50">'.$result['description'].'</textarea>
+							<br>
+							<textarea name="experience" rows="4" cols="50" placeholder="Experience" maxlength="200">'.$result['experience'].'</textarea>
 							<br><br>
 							<input type="submit" value="Update">
-					</div>
-
-					<div id="right-form">
-						<p>
-							Change Category
-						</p>
-							<input type="radio" name="category" id="basic" value="basic" '.(($result["category"]=="basic")?"checked":"").'>
-							<label for="basic">Basic (Free)</label>
-							<br>
-							<input type="radio" name="category" value="prime" '.(($result["category"]=="prime")?"checked":"").'>
-							<label for="prime">Prime ($10/Month)</label>
-							<br>
-							<input type="radio" name="category" value="gold" '.(($result["category"]=="gold")?"checked":"").'>
-							<label for="gold">Gold ($20/Month)</label>
 						</form>
 					</div>
 					<br>

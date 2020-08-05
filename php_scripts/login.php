@@ -9,7 +9,7 @@ $email = $_POST['email'];
 $password = $_POST['password'];
 
 // validate email and password combination
-$validateCreds = $conn->prepare("SELECT * FROM user WHERE email=?");
+$validateCreds = $conn->prepare("SELECT * FROM users WHERE email=?");
 $validateCreds->execute([$email]);
 $result = $validateCreds->fetch();
 $hashPassword = $result['password'];
@@ -17,8 +17,9 @@ $hashPassword = $result['password'];
 // if email exists in the db, proceed with password validation
 if(count($result) > 0) {
 	if(password_verify($password,$hashPassword)) {
-		$_SESSION["userType"] = $result['role'];
+		$_SESSION["userType"] = $result['user_type'];
 		$_SESSION["email"] = $email;
+		$_SESSION['user_id'] = $result['id'];
 		if(isset($_SESSION["loginError"])) {
 			unset($_SESSION["loginError"]);
 		}

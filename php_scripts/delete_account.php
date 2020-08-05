@@ -6,8 +6,8 @@ require($_SERVER["DOCUMENT_ROOT"]."/353_Main_Project/php_scripts/connect.php");
 
 $email = $_SESSION["email"];
 
-$deleteUser = $conn->prepare("DELETE FROM user WHERE email = ?");
-$deleteUser->execute([$email]);
+$deleteUser = $conn->prepare("UPDATE users SET activated = 0 WHERE id = ?");
+$deleteUser->execute([$_SESSION["user_id"]]);
 
 session_unset();
 
