@@ -43,7 +43,9 @@ require("php_scripts/connect.php");
 			} else if($_SESSION['userType'] == 2) {
 				echo'
 					<a href="post_job.php">Post a Job</a>&nbsp;&nbsp;&nbsp;
-					<a href="view_jobs.php">View Current Jobs and Categories</a>&nbsp;&nbsp;&nbsp;
+					<a href="create_category.php">Create a Category</a>&nbsp;&nbsp;&nbsp;
+					<a href="update_jobs.php">View Your Jobs</a>&nbsp;&nbsp;&nbsp;
+					<a href="update_categories.php">View Your Categories</a>&nbsp;&nbsp;&nbsp;
 					<a href="applied_jobs.php">View Status of Applied Jobs</a>&nbsp;&nbsp;&nbsp;
 					<a href="manage_applications.php">Manage Job Applications</a>&nbsp;&nbsp;&nbsp;
 					<a href="contact_us.php">Contact Us</a>&nbsp;&nbsp;&nbsp;
