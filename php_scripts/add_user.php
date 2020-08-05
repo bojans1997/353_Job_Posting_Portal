@@ -37,7 +37,7 @@ if(count($result) > 0)
 
 	$_SESSION['user_id'] = $result['id'];
 	$_SESSION['email'] = $email;
-	$_SESSION['userType'] = "employee";
+	$_SESSION['userType'] = 1;
 
 	$insertProfile = $conn->prepare("INSERT INTO user_profile (user_id, address, postal_code, province) VALUES(?, ?, ?, ?)");
 	$insertProfile->execute([$_SESSION['user_id'], $address, $postal, $province]);
