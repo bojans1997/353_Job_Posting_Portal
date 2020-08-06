@@ -24,10 +24,30 @@ $jobString .= '<tr>
     <td>'.$row["title"].'</td>
     <td>'.$row["salary"].'</td>
     <td>'.$row["description"].'</td>
-    <td>'.$row["positions_available"].'</td>
-    <td>'.$category["name"].'</td></tr>';
+    <td>'.$category["name"].'</td>';
+    
+    
+    if ($row["accepted"] ==  NULL){
+        $jobString .= '
+            <td>Pending</td>
+            <td><a href="php_scripts/job_withdraw.php?jobID='.$row["id"].'&userID='.$_SESSION['user_id'].'&manage=true">Withdraw</a></td></tr>';
+    }
+    else if ($row["accepted"] ==  1){
+        $jobString .= '<td>Accepted</td></tr>';
+    }
+    else if ($row["accepted"] ==  0){
+        $jobString .= '<td>Rejected</td></tr>';
+    }
+    
+    
+    
 }
+
+
+    
 ?>
+
+
 
 <!DOCTYPE html>
 <html>
@@ -79,12 +99,12 @@ table, th, td {
 	<h1>Manage Applied Jobs</h1>
 </div>
 
-<div class="center">
+<div>
 		<?php
 			// Show forms if user is logged in
 			if(isset($_SESSION['userType'])) {
 				if(count($jobs) == 0) {
-					echo '<p>There is no jobs available yet.</p>';
+					echo '<p>You did not apply for a job.</p>';
 				} else {
 					echo '
 						<div id="left-form">
@@ -95,8 +115,8 @@ table, th, td {
 									<th>Title</th>
 									<th>Salary</th>
 									<th>Description</th>
-									<th>Positions Available</th>
 									<th>Category</th>
+                                    <th>Acceptance</th>
 								</tr>'.$jobString.'
 							</table>
 						</div>';

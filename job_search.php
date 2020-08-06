@@ -12,41 +12,50 @@ $categoryID = '';
 if(isset($_POST["category"])){
     $categoryID = $_POST["category"];
 }
+
 if (empty($categoryID)|| $categoryID == 0) {
-    $getJobs = $conn->prepare("SELECT * FROM job ORDER BY company");
+    $getJobs = $conn->prepare("SELECT * FROM job  WHERE positions_available != 0 ORDER BY company");
     $getJobs->execute();
     $jobs = $getJobs->fetchAll();
 
     $jobString = "";
     foreach ($jobs as $row) {
         
-        $getCategory = $conn->prepare("SELECT name FROM category WHERE id = ?");
-        $getCategory->execute([$row["category_id"]]);
-        $category = $getCategory->fetch();
+        $acceptNull = $conn->prepare("SELECT accepted FROM job_application WHERE user_id = ? AND job_id = ?");
+        $acceptNull->execute([$_SESSION['user_id'], $row["id"]]);
+        $checkAcceptNull = $acceptNull->fetch();
         
-        $jobString .= '<tr>
-            <td>'.$row["company"].'</td>
-            <td>'.$row["title"].'</td>
-            <td>'.$row["salary"].'</td>
-            <td>'.$row["description"].'</td>
-            <td>'.$row["positions_available"].'</td>
-            <td>'.$category["name"].'</td>';
-        $apply= false;
-        foreach ($applyResult as $applyRow) {
-            if ($applyRow["job_id"]==$row["id"]){
-                  $apply= true;
-            }            
+        if (is_null($checkAcceptNull["accepted"])){
+            $getCategory = $conn->prepare("SELECT name FROM category WHERE id = ?");
+            $getCategory->execute([$row["category_id"]]);
+            $category = $getCategory->fetch();
+
+            $jobString .= '<tr>
+                <td>'.$row["company"].'</td>
+                <td>'.$row["title"].'</td>
+                <td>'.$row["salary"].'</td>
+                <td>'.$row["description"].'</td>
+                <td>'.$row["positions_available"].'</td>
+                <td>'.$category["name"].'</td>';
+            $apply= false;
+
+            foreach ($applyResult as $applyRow) {
+                if ($applyRow["job_id"]==$row["id"]){
+                      $apply= true;
+                }            
+            }
+
+            if($apply){
+                $jobString .= '
+                <td><a href="php_scripts/job_withdraw.php?jobID='.$row["id"].'&userID='.$_SESSION['user_id'].'">Withdraw</a></td>';
+            }else{
+                $jobString .= '
+                <td><a href="php_scripts/job_apply.php?jobID='.$row["id"].'&userID='.$_SESSION['user_id'].'">Apply</a></td>';
+            }
+
+
+            $jobString .= '</tr>';
         }
-         if($apply){
-             $jobString .= '
-            <td><a href="php_scripts/job_withdraw.php?jobID='.$row["id"].'&userID='.$_SESSION['user_id'].'">Withdraw</a></td>';
-         }else{
-             $jobString .= '
-            <td><a href="php_scripts/job_apply.php?jobID='.$row["id"].'&userID='.$_SESSION['user_id'].'">Apply</a></td>';
-         }
-        
-        
-        $jobString .= '</tr>';
     }
 
     $getCategories = $conn->prepare("SELECT id, name FROM  category");
@@ -60,7 +69,7 @@ if (empty($categoryID)|| $categoryID == 0) {
     }
 }
 else{
-    $getJobs = $conn->prepare("SELECT * FROM job WHERE category_id = ?");
+    $getJobs = $conn->prepare("SELECT * FROM job WHERE category_id = ? AND positions_available != 0");
     $getJobs->execute([$categoryID]);
     $jobs = $getJobs->fetchAll();
 
@@ -68,33 +77,39 @@ else{
 
     foreach ($jobs as $row) {
          
-        $getCategory = $conn->prepare("SELECT name FROM category WHERE id = ?");
-        $getCategory->execute([$row["category_id"]]);
-        $category = $getCategory->fetch();
+        $acceptNull = $conn->prepare("SELECT accepted FROM job_application WHERE user_id = ? AND job_id = ?");
+        $acceptNull->execute([$_SESSION['user_id'], $row["id"]]);
+        $checkAcceptNull = $acceptNull->fetch();
         
-        $jobString .= '<tr>
-            <td>'.$row["company"].'</td>
-            <td>'.$row["title"].'</td>
-            <td>'.$row["salary"].'</td>
-            <td>'.$row["description"].'</td>
-            <td>'.$row["positions_available"].'</td>
-            <td>'.$category["name"].'</td>';
-        $apply= false;
-        foreach ($applyResult as $applyRow) {
-            if ($applyRow["job_id"]==$row["id"]){
-                  $apply= true;
-            }            
+        if (is_null($checkAcceptNull["accepted"])){
+            $getCategory = $conn->prepare("SELECT name FROM category WHERE id = ?");
+            $getCategory->execute([$row["category_id"]]);
+            $category = $getCategory->fetch();
+
+            $jobString .= '<tr>
+                <td>'.$row["company"].'</td>
+                <td>'.$row["title"].'</td>
+                <td>'.$row["salary"].'</td>
+                <td>'.$row["description"].'</td>
+                <td>'.$row["positions_available"].'</td>
+                <td>'.$category["name"].'</td>';
+            $apply= false;
+            foreach ($applyResult as $applyRow) {
+                if ($applyRow["job_id"]==$row["id"]){
+                      $apply= true;
+                }            
+            }
+             if($apply){
+                 $jobString .= '
+                <td><a href="php_scripts/job_withdraw.php?jobID='.$row["id"].'&userID='.$_SESSION['user_id'].'">Withdraw</a></td>';
+             }else{
+                 $jobString .= '
+                <td><a href="php_scripts/job_apply.php?jobID='.$row["id"].'&userID='.$_SESSION['user_id'].'">Apply</a></td>';
+             }
+
+
+            $jobString .= '</tr>';
         }
-         if($apply){
-             $jobString .= '
-            <td><a href="php_scripts/job_withdraw.php?jobID='.$row["id"].'&userID='.$_SESSION['user_id'].'">Withdraw</a></td>';
-         }else{
-             $jobString .= '
-            <td><a href="php_scripts/job_apply.php?jobID='.$row["id"].'&userID='.$_SESSION['user_id'].'">Apply</a></td>';
-         }
-        
-        
-        $jobString .= '</tr>';
     }
 
     $getCategories = $conn->prepare("SELECT id, name FROM  category");
