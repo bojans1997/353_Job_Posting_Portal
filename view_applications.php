@@ -13,6 +13,12 @@ if(isset($_GET['jobID']) && isset($_GET['userID']) && isset($_GET['op'])) {
 
 		$updatePositionsOpen = $conn->prepare("UPDATE job SET positions_available = ? WHERE id = ?");
 		$updatePositionsOpen->execute([$newPositions, $_GET['jobID']]);
+
+		// if there are no more positions available, reject all other applications for this job
+		if($newPositions == 0) {
+			$rejectApplications = $conn->prepare("UPDATE job_application SET accepted = 0 WHERE job_id = ?");
+			$rejectApplications->execute([$_GET['jobID']]);
+		}
 	}
 
 	$acceptCandidate = $conn->prepare("UPDATE job_application SET accepted = ? WHERE user_id = ? AND job_id = ?");
