@@ -46,8 +46,7 @@ require("php_scripts/connect.php");
 					<a href="create_category.php">Create a Category</a>&nbsp;&nbsp;&nbsp;
 					<a href="update_jobs.php">View Your Jobs</a>&nbsp;&nbsp;&nbsp;
 					<a href="update_categories.php">View Your Categories</a>&nbsp;&nbsp;&nbsp;
-					<a href="applied_jobs.php">View Status of Applied Jobs</a>&nbsp;&nbsp;&nbsp;
-					<a href="manage_applications.php">Manage Job Applications</a>&nbsp;&nbsp;&nbsp;
+					<a href="view_applications.php">View Job Applications</a>&nbsp;&nbsp;&nbsp;
 					<a href="contact_us.php">Contact Us</a>&nbsp;&nbsp;&nbsp;
 					<a href="/353_Main_Project/php_scripts/logout.php">Log Out</a>
 				';
