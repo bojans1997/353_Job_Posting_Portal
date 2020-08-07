@@ -4,7 +4,7 @@ session_start();
 
 require($_SERVER["DOCUMENT_ROOT"]."/353_Main_Project/php_scripts/connect.php");
 
-$getPaymentMethods = $conn->prepare("SELECT * FROM payment_method WHERE user_id = ?");
+$getPaymentMethods = $conn->prepare("SELECT * FROM payment_method WHERE user_id = ? AND (active = 1 OR active IS NULL)");
 $getPaymentMethods->execute([$_SESSION["user_id"]]);
 $result = $getPaymentMethods->fetchAll();
 
@@ -15,6 +15,11 @@ $paymentOptions = "";
 
 foreach ($result as $row) {
 	$paymentOptions .= '<option value="'.$row['id'].'">'.$row['card_number'].'</option>';
+}
+
+// if user picked the basic subscription, don't ask for their payment method
+if($newSubscription == 1) {
+	header("Location:/353_Main_Project/php_scripts/change_category.php?basic=1&old=".$currentSubscription);
 }
 
 ?>

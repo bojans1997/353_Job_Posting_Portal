@@ -5,7 +5,7 @@ session_start();
 require("php_scripts/connect.php");
 
 
-$getMethods = $conn->prepare("SELECT * FROM payment_method WHERE user_id = ?");
+$getMethods = $conn->prepare("SELECT * FROM payment_method WHERE user_id = ? AND (active = 1 OR active IS NULL)");
 $getMethods->execute([$_SESSION["user_id"]]);
 $methods = $getMethods->fetchAll();
 
