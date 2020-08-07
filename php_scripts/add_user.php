@@ -42,6 +42,9 @@ if(count($result) > 0)
 	$insertProfile = $conn->prepare("INSERT INTO user_profile (user_id, address, postal_code, province) VALUES(?, ?, ?, ?)");
 	$insertProfile->execute([$_SESSION['user_id'], $address, $postal, $province]);
 
+	$insertSubscription = $conn->prepare("INSERT INTO subscription (subscription_model_id, user_id, start_date, active) VALUES(?, ?, ?, ?)");
+	$insertSubscription->execute([1, $_SESSION['user_id'], date("Y-m-d"), 1]);
+
 	if(isset($_SESSION["errorEmail"])) {
 		unset($_SESSION["errorEmail"]);
 	}
