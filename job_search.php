@@ -4,6 +4,16 @@ session_start();
 
 require("php_scripts/connect.php");
 
+// check if user is allowed to apply for jobs
+$getSubscriptionModel= $conn->prepare("SELECT * FROM subscription WHERE user_id = ? AND active = 1");
+$getSubscriptionModel->execute([$_SESSION["user_id"]]);
+$subscription = $getSubscriptionModel->fetch();
+
+// get number of jobs already applied to from this user
+$getNumJobs= $conn->prepare("SELECT * FROM job_application WHERE user_id = ? AND accepted IS NULL");
+$getNumJobs->execute([$_SESSION["user_id"]]);
+$numJobs = $getNumJobs->fetchAll();
+
 $getApply = $conn->prepare("SELECT * FROM job_application WHERE user_id = ?");
 $getApply->execute([$_SESSION['user_id']]);
 $applyResult = $getApply->fetchAll();
@@ -49,8 +59,10 @@ if (empty($categoryID)|| $categoryID == 0) {
                 $jobString .= '
                 <td><a href="php_scripts/job_withdraw.php?jobID='.$row["id"].'&userID='.$_SESSION['user_id'].'">Withdraw</a></td>';
             }else{
-                $jobString .= '
-                <td><a href="php_scripts/job_apply.php?jobID='.$row["id"].'&userID='.$_SESSION['user_id'].'">Apply</a></td>';
+                if($subscription['subscription_model_id'] == 3 || ($subscription['subscription_model_id'] == 2 && count($numJobs) < 5)) { 
+                    $jobString .= '
+                    <td><a href="php_scripts/job_apply.php?jobID='.$row["id"].'&userID='.$_SESSION['user_id'].'">Apply</a></td>';
+                }
             }
 
 
@@ -103,8 +115,10 @@ else{
                  $jobString .= '
                 <td><a href="php_scripts/job_withdraw.php?jobID='.$row["id"].'&userID='.$_SESSION['user_id'].'">Withdraw</a></td>';
              }else{
-                 $jobString .= '
-                <td><a href="php_scripts/job_apply.php?jobID='.$row["id"].'&userID='.$_SESSION['user_id'].'">Apply</a></td>';
+                if($subscription['subscription_model_id'] == 3 || ($subscription['subscription_model_id'] == 2 && count($numJobs) < 5)) {
+                    $jobString .= '
+                    <td><a href="php_scripts/job_apply.php?jobID='.$row["id"].'&userID='.$_SESSION['user_id'].'">Apply</a></td>';
+                }
              }
 
 
@@ -182,18 +196,25 @@ table, th, td {
     <?php 
         // Show forms if user is logged in
 			if(isset($_SESSION['userType'])) {
-				echo '
-                    <p>Search by category:</p>
-					<div id="left-form">
-						<form method="POST" action="">
-							<select name="category">
-                            <option value=0> Default (Company Name)</option>
-							'.$categories.'
-							</select>
-							<input type="submit" value="Search">
-						</form>
-					</div>
-                    <br>';
+                if($subscription['subscription_model_id'] == 1) {
+                    echo '<p>You cannot apply for jobs with your current subscription.</p>';
+                } else {
+                    if($subscription['subscription_model_id'] == 2 && count($numJobs) >= 5) {
+                        echo '<p>You have reached your limit of 5 job applications</p>';
+                    }
+    				echo '
+                        <p>Search by category:</p>
+    					<div id="left-form">
+    						<form method="POST" action="">
+    							<select name="category">
+                                <option value=0> Default (Company Name)</option>
+    							'.$categories.'
+    							</select>
+    							<input type="submit" value="Search">
+    						</form>
+    					</div>
+                        <br>';
+                }
 			} else {
 				echo '<p>You must <a href="login.php">log in</a> to view this page</p>';
 			}
