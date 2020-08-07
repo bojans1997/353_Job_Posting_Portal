@@ -17,6 +17,11 @@ foreach ($result as $row) {
 	$paymentOptions .= '<option value="'.$row['id'].'">'.$row['card_number'].'</option>';
 }
 
+// if user picked the basic subscription, don't ask for their payment method
+if($newSubscription == 1) {
+	header("Location:/353_Main_Project/php_scripts/change_category.php?basic=1&old=".$currentSubscription);
+}
+
 ?>
 
 <!DOCTYPE html>
