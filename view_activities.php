@@ -8,7 +8,8 @@ $query = "SELECT * FROM job_application
             INNER JOIN users user
 	            on user.id = user_id
             INNER JOIN job j
-                on j.id = job_id";
+                on j.id = job_id
+                order by application_date DESC" ;
 
 $getApplications = $conn->prepare($query);
 $getApplications->execute();
