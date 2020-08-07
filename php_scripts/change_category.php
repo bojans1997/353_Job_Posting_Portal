@@ -16,7 +16,7 @@ $getPrice->execute([$newCategory]);
 $price = $getPrice->fetch();
 
 // update old subscription termination date
-$updateSubscription = $conn->prepare("UPDATE subscription SET termination_date = ?, active = 0 WHERE user_id = ? AND subscription_model_id = ?");
+$updateSubscription = $conn->prepare("UPDATE subscription SET termination_date = ?, active = 0 WHERE user_id = ? AND subscription_model_id = ? AND active = 1");
 $updateSubscription->execute([date('Y-m-d'), $_SESSION["user_id"], $oldCategory]);
 
 // insert new subscription
