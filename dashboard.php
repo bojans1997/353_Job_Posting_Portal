@@ -54,7 +54,7 @@ require("php_scripts/connect.php");
 					<a href="contact_us.php">Contact Us</a>&nbsp;&nbsp;&nbsp;
 					<a href="/353_Main_Project/php_scripts/logout.php">Log Out</a>
 				';
-			} else {
+			} else if($_SESSION['userType'] == 3) {
 				echo'
 					<a href="manage_users.php">Manage Users</a>&nbsp;&nbsp;&nbsp;
 					<a href="view_activities.php">View Activities</a>&nbsp;&nbsp;&nbsp;
