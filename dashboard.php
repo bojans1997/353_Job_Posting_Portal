@@ -42,7 +42,8 @@ $user = $getUserInfo->fetch();
 					<p>Your account is frozen. You must make a payment to continue.</p>
 					<a href="add_payment.php">Add Payment Method</a>&nbsp;&nbsp;&nbsp;
 					<a href="manage_payments.php">Manage Payment Methods</a>&nbsp;&nbsp;&nbsp;
-					<a href="make_payment.php">Make Payment</a>&nbsp;&nbsp;&nbsp;';
+					<a href="make_payment.php">Make Payment</a>&nbsp;&nbsp;&nbsp;
+					<a href="/353_Main_Project/php_scripts/logout.php">Log Out</a>';
 
 			} else {
 				if($_SESSION['userType'] == 1) {

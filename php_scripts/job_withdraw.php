@@ -9,9 +9,6 @@ require($_SERVER["DOCUMENT_ROOT"]."/353_Main_Project/php_scripts/connect.php");
 $userID = $_GET['userID'];
 $jobID = $_GET['jobID'];
 $manage = $_GET['manage'];
-    
-echo $userID;
-echo $jobID;
 
 $applyJob = $conn->prepare("delete from job_application
 where user_id = ? and job_id = ? ;");
