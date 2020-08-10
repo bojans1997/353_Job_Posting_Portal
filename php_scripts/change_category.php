@@ -17,6 +17,8 @@ if(isset($_GET["basic"])) {
 	// insert new transaction
 	$insertTransaction= $conn->prepare("INSERT INTO transaction (subscription_id, user_id, amount, paid, date) VALUES (?, ?, ?, ?, ?)");
 	$insertTransaction->execute([1, $_SESSION["user_id"], 0.00, 1, date("Y-m-d")]);
+
+	 mail($_SESSION["email"], "Subscription change", "Your subscription has been changed to BASIC and you have been charged $0.00");
 } else {
 	// store POST data
 	$newCategory = $_POST["newSubscription"];
@@ -39,6 +41,13 @@ if(isset($_GET["basic"])) {
 	// insert new transaction
 	$insertTransaction= $conn->prepare("INSERT INTO transaction (subscription_id, user_id, amount, paid, date) VALUES (?, ?, ?, ?, ?)");
 	$insertTransaction->execute([$newCategory, $_SESSION["user_id"], $price['price'], 1, date("Y-m-d")]);
+
+	$getInfo = $conn->prepare("SELECT * FROM subscription_model WHERE id = ?");
+	$getInfo->execute([$newCategory]);
+	$info = $getInfo->fetch();
+
+	mail($_SESSION["email"], "Subscription change", "Your subscription has been changed to ".$info["name"]." and you have been charged $".$price["price"]);
+
 }
 
 header("Location:/353_Main_Project/change_subscription.php");

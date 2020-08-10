@@ -15,7 +15,7 @@ $result = $validateCreds->fetch();
 $hashPassword = $result['password'];
 
 // if email exists in the db, proceed with password validation
-if(count($result) > 0) {
+if(!empty($result)) {
 	if(password_verify($password,$hashPassword)) {
 
 		if($result['activated'] == 0) {
